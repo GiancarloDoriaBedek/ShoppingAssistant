@@ -6,6 +6,8 @@ namespace ShoppingAssistant.Repository.Interfaces
     {
         //Task<IEnumerable<Product>> GetProductsOfSimilarNameAsync(string similarName);
         //Task<Product> GetProduct(string similarName, string storeName);
+
+        Task<IEnumerable<Product>> GetProductsByName(string name);
         Task SaveProduct(Product product);
     }
 }

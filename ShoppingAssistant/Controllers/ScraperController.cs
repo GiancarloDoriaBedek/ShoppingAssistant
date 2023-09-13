@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingAssistant.DTOs;
 using ShoppingAssistant.DTOs.ScraperDTOs;
 using ShoppingAssistant.Models;
 using ShoppingAssistant.Repository.Interfaces;
 using ShoppingAssistant.Services.Interfaces;
+using System.Data;
 using System.Net;
 
 namespace ShoppingAssistant.Controllers
 {
     [Route("api/Scraper")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class ScraperController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -60,8 +63,18 @@ namespace ShoppingAssistant.Controllers
                     });
 
                 var scrapeProductsRequest = _mapper.Map<List<ScrapeProductsRequestDTO>>(scrapedPages);
+                foreach (var requestDTO in scrapeProductsRequest)
+                {
+                    requestDTO.StoreName = request.StoreName;
+                }
+
                 var scrapedProducts = new List<ScrapeProductsResponseDTO>();
 
+                //foreach (var productRequest in scrapeProductsRequest)
+                //{
+                //    var productsOnPage = _webshopScraperService.ScrapeProducts(productRequest);
+                //    scrapedProducts.AddRange(productsOnPage.Result);
+                //}
                 Parallel.ForEach(
                     scrapeProductsRequest,
                     x =>

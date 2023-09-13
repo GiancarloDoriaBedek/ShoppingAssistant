@@ -13,6 +13,14 @@ namespace ShoppingAssistant.Repository.Implementations
             _context = context;
         }
 
+        public async Task<IEnumerable<Product>> GetProductsByName(string name)
+        {
+            // TODO: implement smarter way to search by name
+            var productsOfSimilarName = await GetAllAsync(x => x.Name.Contains(name));
+
+            return productsOfSimilarName;
+        }
+
         public async Task SaveProduct(Product product)
         {
             var productFromDatabase = await GetAsync(x => x.ProductNativeID == product.ProductNativeID);
@@ -39,5 +47,6 @@ namespace ShoppingAssistant.Repository.Implementations
 
             await SaveAsync();
         }
+
     }
 }
