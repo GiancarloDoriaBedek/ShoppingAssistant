@@ -3,6 +3,7 @@
     public class Package
     {
         public long ID { get; set; }
+        public long ProductID { get; set; }
         public string Currency { get; set; }
         public decimal PackagePrice { get; set; }
         public decimal UnitPrice { get; set; } 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingAssistant.DTOs;
 using ShoppingAssistant.DTOs.UserDTOs;
 using ShoppingAssistant.Models;
+using ShoppingAssistant.Repository.Implementations;
 using ShoppingAssistant.Repository.Interfaces;
 using ShoppingAssistant.Services.Interfaces;
 using System.Net;
@@ -14,6 +15,7 @@ namespace ShoppingAssistant.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
         private readonly IPasswordService _passwordService;
         private readonly ITokenService _tokenService;
@@ -22,11 +24,13 @@ namespace ShoppingAssistant.Controllers
 
         public AuthController(
             IUserRepository userRepository,
+            IRoleRepository roleRepository,
             IMapper mapper,
-            IPasswordService passwordService, 
+            IPasswordService passwordService,
             ITokenService tokenService)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
             _passwordService = passwordService;
             _tokenService = tokenService;
@@ -69,6 +73,9 @@ namespace ShoppingAssistant.Controllers
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
 
+                var lowestAuthorizationRole = await _roleRepository.GetLowestClearanceRole();
+                user.CustomRole = lowestAuthorizationRole;
+
                 await _userRepository.CreateAsync(user);
 
                 _response.Result = _mapper.Map<UserPublicResponseDTO>(user);
@@ -76,7 +83,7 @@ namespace ShoppingAssistant.Controllers
 
                 return Ok(_response);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;

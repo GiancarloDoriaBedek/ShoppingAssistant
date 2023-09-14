@@ -13,7 +13,7 @@ namespace ShoppingAssistant.Controllers
 {
     [Route("api/Scraper")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class ScraperController : Controller
     {
         private readonly IProductRepository _productRepository;

@@ -64,6 +64,11 @@ namespace ShoppingAssistant.Repository.Implementations
                     query = query.Include(includeProp);
                 }
             }
+
+            if (query is null)
+            {
+                return new List<T>();
+            }
             return await query.ToListAsync();
         }
 

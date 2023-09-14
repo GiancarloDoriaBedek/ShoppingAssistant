@@ -37,7 +37,8 @@ namespace ShoppingAssistant
             builder.Services.AddScoped<IPackageRepository, PackageRepository>();
             builder.Services.AddScoped<IStoreRepository, StoreRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-            
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>

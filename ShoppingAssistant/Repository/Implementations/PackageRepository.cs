@@ -7,10 +7,12 @@ namespace ShoppingAssistant.Repository.Implementations
     public class PackageRepository : GenericRepository<Package>, IPackageRepository
     {
         private readonly DataContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public PackageRepository(DataContext context) : base(context)
+        public PackageRepository(DataContext context, IProductRepository productRepository) : base(context)
         {
             _context = context;
+            _productRepository = productRepository;
         }
     }
 }

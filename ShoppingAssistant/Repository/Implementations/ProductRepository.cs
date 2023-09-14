@@ -1,4 +1,5 @@
-﻿using ShoppingAssistant.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingAssistant.Data;
 using ShoppingAssistant.Models;
 using ShoppingAssistant.Repository.Interfaces;
 
@@ -23,7 +24,8 @@ namespace ShoppingAssistant.Repository.Implementations
         public async Task<IEnumerable<Product>> GetProductsByName(string name)
         {
             // TODO: implement smarter way to search by name
-            var productsOfSimilarName = await GetAllAsync(x => x.Name.Contains(name));
+            name = '%' + name + '%';
+            var productsOfSimilarName = await GetAllAsync(x => EF.Functions.Like(x.Name.ToLower(), name.ToLower()));
 
             return productsOfSimilarName;
         }
