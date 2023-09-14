@@ -6,9 +6,6 @@
 * [Features](#features)
 * [Usage](#usage)
 * [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
-<!-- * [License](#license) -->
-
 
 ## General Information
 - This API is used to track and save price information about products from various webshops. This is achieved by connecting to this [scraper API](https://github.com/GiancarloDoriaBedek/webshop_scraper_api)
