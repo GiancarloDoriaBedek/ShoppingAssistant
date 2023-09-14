@@ -89,43 +89,7 @@ namespace ShoppingAssistant.Controllers
                 await _roleRepository.CreateAsync(newRole);
                 _response.Result = request;
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("CreateRole", new { id = newRole.ID }, _response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages.Add(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, _response);
-            }
-        }
-
-        [HttpDelete("{id:long}", Name = "DeleteRole")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ApiResponseDTO>> DeleteRole(long id)
-        {
-            try
-            {
-                if (id == 0)
-                {
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(_response);
-                }
-                var roleFromDatabase = await _roleRepository.GetAsync(x => x.ID == id);
-
-                if (roleFromDatabase is null)
-                {
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
-
-                await _roleRepository.RemoveAsync(roleFromDatabase);
-                _response.StatusCode = HttpStatusCode.NoContent;
-                return Ok(_response);
+                return _response;
             }
             catch (Exception ex)
             {
