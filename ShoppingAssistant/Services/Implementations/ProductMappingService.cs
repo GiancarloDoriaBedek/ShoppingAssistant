@@ -29,7 +29,8 @@ namespace ShoppingAssistant.Services.Implementations
                         PackageUnit = dto.ProductPackageUnitOfMeasurement,
                         PackageQuantity = dto.ProductPackageQuantity,
                         PriceStartDate = dto.ProductPriceStartDate,
-                        PriceEndDate = dto.ProductPriceEndDate
+                        PriceEndDate = dto.ProductPriceEndDate,
+                        PriceDate = dto.PriceDate
                     }
                 },
                 Brand = new Brand

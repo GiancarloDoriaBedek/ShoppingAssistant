@@ -8,6 +8,7 @@
         public string ProductBrand { get; set; } = string.Empty;
         public DateTime? ProductPriceStartDate { get; set; }
         public DateTime? ProductPriceEndDate { get; set; }
+        public DateTime PriceDate { get; set; }
         public string ProductURL { get; set; } = string.Empty;
         public string ProductImageURL { get; set; } = string.Empty;
         public string ProductCurrency { get; set; } = string.Empty;

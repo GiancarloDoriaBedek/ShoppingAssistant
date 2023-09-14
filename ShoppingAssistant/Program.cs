@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShoppingAssistant.Data;
-using ShoppingAssistant.Models;
-using ShoppingAssistant.Repository;
 using ShoppingAssistant.Repository.Implementations;
 using ShoppingAssistant.Repository.Interfaces;
 using ShoppingAssistant.Services.Implementations;
@@ -36,6 +34,9 @@ namespace ShoppingAssistant
             // Repositories
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPackageRepository, PackageRepository>();
+            builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

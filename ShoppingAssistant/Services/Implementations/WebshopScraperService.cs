@@ -110,7 +110,7 @@ namespace ShoppingAssistant.Services.Implementations
 
                     if (products is null)
                     {
-                        throw new Exception("No products found");
+                        return new List<ScrapeProductsResponseDTO>();
                     }
 
                     return products;

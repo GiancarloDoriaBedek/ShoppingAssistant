@@ -7,10 +7,17 @@ namespace ShoppingAssistant.Repository.Implementations
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
         private readonly DataContext _context;
+        private readonly IStoreRepository _storeRepository;
+        private readonly IBrandRepository _brandRepository;
 
-        public ProductRepository(DataContext context) : base(context)
+        public ProductRepository(
+            DataContext context, 
+            IStoreRepository storeRepository, 
+            IBrandRepository brandRepository) : base(context)
         {
             _context = context;
+            _storeRepository = storeRepository;
+            _brandRepository = brandRepository;
         }
 
         public async Task<IEnumerable<Product>> GetProductsByName(string name)
@@ -24,6 +31,18 @@ namespace ShoppingAssistant.Repository.Implementations
         public async Task SaveProduct(Product product)
         {
             var productFromDatabase = await GetAsync(x => x.ProductNativeID == product.ProductNativeID);
+
+            var existingStore = await _storeRepository.GetAsync(x => x.Name == product.Store.Name);
+            if (existingStore is not null)
+            {
+                product.Store = existingStore;
+            }
+
+            var existingBrand = await _brandRepository.GetAsync(x => x.Name == product.Brand.Name);
+            if (existingBrand is not null)
+            {
+                product.Brand = existingBrand;
+            }
 
             if (productFromDatabase is null) 
             {
@@ -39,14 +58,14 @@ namespace ShoppingAssistant.Repository.Implementations
         {
             foreach (var newPackage in product.Packages)
             {
-                if (!productFromDatabase.Packages.Any(x => x.ID == newPackage.ID))
+                if (!productFromDatabase.Packages?.Any(x => x.ID == newPackage.ID) ?? false)
                 {
+                    productFromDatabase.Packages ??= new List<Package>();
                     productFromDatabase.Packages.Add(newPackage);
                 }
             }
 
             await SaveAsync();
         }
-
     }
 }

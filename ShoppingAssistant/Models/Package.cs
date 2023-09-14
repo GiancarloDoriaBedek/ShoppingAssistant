@@ -9,7 +9,10 @@
         public string Unit { get; set; }
         public string PackageUnit { get; set; }
         public double PackageQuantity { get; set; }
+
+        // Set on special offers where daterange is known
         public DateTime? PriceStartDate { get; set; }
         public DateTime? PriceEndDate { get; set; }
+        public DateTime PriceDate { get; set; }
     }
 }

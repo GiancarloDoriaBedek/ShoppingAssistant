@@ -54,12 +54,14 @@ namespace ShoppingAssistant.Controllers
                     .ForEach(x => x.StoreName = request.StoreName);
 
                 var scrapedPages = new List<ScrapePagesResponseDTO>();
+
                 Parallel.ForEach(
                     scrapePagesRequest,
                     x =>
                     {
                         var pagesOnCategory = _webshopScraperService.ScrapePages(x);
-                        scrapedPages.AddRange(pagesOnCategory.Result);
+                        if (pagesOnCategory.Result is not null)
+                            scrapedPages.AddRange(pagesOnCategory.Result);
                     });
 
                 var scrapeProductsRequest = _mapper.Map<List<ScrapeProductsRequestDTO>>(scrapedPages);
@@ -70,17 +72,13 @@ namespace ShoppingAssistant.Controllers
 
                 var scrapedProducts = new List<ScrapeProductsResponseDTO>();
 
-                //foreach (var productRequest in scrapeProductsRequest)
-                //{
-                //    var productsOnPage = _webshopScraperService.ScrapeProducts(productRequest);
-                //    scrapedProducts.AddRange(productsOnPage.Result);
-                //}
                 Parallel.ForEach(
                     scrapeProductsRequest,
                     x =>
                     {
                         var productsOnPage = _webshopScraperService.ScrapeProducts(x);
-                        scrapedProducts.AddRange(productsOnPage.Result);
+                        if (productsOnPage.Result is not null)
+                            scrapedProducts.AddRange(productsOnPage.Result);
                     });
 
                 var products = _productMappingService.MapToProduct(scrapedProducts);
