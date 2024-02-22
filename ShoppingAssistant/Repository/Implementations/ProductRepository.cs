@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingAssistant.Data;
+using ShoppingAssistant.DTOs.ProductDTOs;
 using ShoppingAssistant.Models;
 using ShoppingAssistant.Repository.Interfaces;
 
@@ -20,6 +21,38 @@ namespace ShoppingAssistant.Repository.Implementations
             _storeRepository = storeRepository;
             _brandRepository = brandRepository;
         }
+
+        public async Task<IEnumerable<Product>> GetProducts(GetProductsRequestDTO request)
+        {
+            if (request is null) 
+            {
+                return Enumerable.Empty<Product>();
+            }
+
+            var query = _context.Products.AsQueryable();
+
+            if (request.IDs is not null
+                && request.IDs.Any())
+            {
+                query = query.Where(x => request.IDs.Contains(x.ID));
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(request.Name.ToLower()));
+                //query = query.Where(x => EF.Functions.Like(x.Name.ToLower(), request.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Store))
+            {
+                query = query.Where(x => EF.Functions.Like(x.Store.Name.ToLower(), request.Store.ToLower()));
+            }
+
+            var products = await query.ToListAsync();
+
+            return products;
+        }
+
 
         public async Task<IEnumerable<Product>> GetProductsByName(string name)
         {

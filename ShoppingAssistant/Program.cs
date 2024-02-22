@@ -30,6 +30,7 @@ namespace ShoppingAssistant
             builder.Services.AddScoped<IWebshopScraperService, WebshopScraperService>();
             builder.Services.AddScoped<IStringDistanceService, StringDistanceService>();
             builder.Services.AddScoped<IProductMappingService, ProductMappingService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             // Repositories
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
